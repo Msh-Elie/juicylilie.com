@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cindy Lopes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 60vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            padding: 0 20px 0 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-width: 1023px) {
+            .container {
+                padding: 0 0 0 0;
+            }
+        }
+
+        .main-wrapper {
+            margin: 0 auto;
+            max-width: 448px;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-width: 1023px) {
+            .main-wrapper {
+                max-width: none;
+            }
+        }
+
+        /* Background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('assert/CindyOf.jpeg');
+            background-size: cover;
+            background-position: top center;
+            background-attachment: fixed;
+            z-index: 0;
+        }
+
+        @media (max-width: 1023px) {
+            .background {
+                display: none;
+            }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            z-index: 1;
+        }
+
+        /* Sticky Header */
+        .sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 50;
+            border-radius: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .sticky-header.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+        }
+
+        .header-image {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 12px;
+            object-fit: cover;
+        }
+
+        .header-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            padding-top: 0;
+            background-color: #000;
+            border-radius: 40px;
+            overflow: hidden;
+        }
+
+        @media (max-width: 1023px) {
+            .profile-section {
+                border-radius: 0;
+            }
+        }
+
+        .profile-picture-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .profile-picture-container .overlay-darkening {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            opacity: 0;
+            z-index: 3;
+            pointer-events: none;
+            transition: opacity 0.1s ease-out;
+        }
+
+        .profile-picture {
+            width: 100%;
+            height: auto;
+            max-height: 45vh;
+            object-fit: cover;
+            object-position: bottom center;
+            bottom: 100px;
+            mask-image: linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 80%, rgba(0, 0, 0, 0) 100%);
+            -webkit-mask-image: linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 80%, rgba(0, 0, 0, 0) 100%);
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-name {
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            margin-top: -100px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .profile-name h1 {
+            font-size: 32px;
+            font-weight: 600;
+            text-align: center;
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            margin-bottom: 8px;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+
+        .social-icons a:hover {
+            transform: scale(1.1);
+        }
+
+        .social-icons svg {
+            width: 100%;
+            height: 100%;
+            stroke: none;
+            fill: #fff;
+            stroke-width: 0;
+            opacity: 0.9;
+        }
+
+        /* Liens */
+        .links-section {
+            margin: 0 auto;
+            width: 100%;
+            max-width: 460px;
+            padding: 0 1.25rem;
+            margin-top: 20px;
+        }
+
+        .link-item {
+            margin: 20px 0;
+        }
+
+        .link-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 460px;
+            padding: 10px 8px;
+            margin: 20px 0;
+            border-radius: 36px;
+            background-color: #0de7e4;
+            color: rgb(5, 5, 5);
+            text-decoration: none;
+            text-transform: none;
+            box-shadow: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+            min-height: 10px;
+        }
+
+        .link-button:hover {
+            transform: scale(1.02);
+        }
+
+        /* Bouton MYM — style distinct */
+        .link-button-mym {
+            background-color: #ff3e6c;
+            color: #fff;
+        }
+
+        /* Animation bounce */
+        .bounce-animation {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Bordure animée */
+        .animated-border {
+            border: none;
+        }
+
+        .animated-border::before,
+        .animated-border::after {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid #ffffff;
+            transition: all 0.5s;
+            animation: clippath 3s infinite linear;
+            border-radius: 36px;
+            pointer-events: none;
+        }
+
+        .animated-border::after {
+            animation: clippath 3s infinite -1.5s linear;
+        }
+
+        @keyframes clippath {
+            0%, 100% {
+                clip-path: inset(0 0 98% 0);
+            }
+            25% {
+                clip-path: inset(0 98% 0 0);
+            }
+            50% {
+                clip-path: inset(98% 0 0 0);
+            }
+            75% {
+                clip-path: inset(0 0 0 98%);
+            }
+        }
+
+        /* Animation de clic */
+        @keyframes buttonClick {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.95);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+        }
+
+        .link-button.clicked {
+            animation: buttonClick 0.6s ease forwards;
+        }
+
+        /* Bouton transformé en modal */
+        .link-button.modal-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: auto;
+            padding: 25px 20px;
+            height: auto;
+        }
+
+        .modal-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 6px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+
+        .modal-text {
+            font-size: 12px;
+            color: var(--text-color);
+            margin-bottom: 12px;
+            line-height: 1.3;
+            text-align: center;
+            font-family: 'Segoe UI', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        .modal-button-inner {
+            background-color: rgba(0, 0, 0, 0.15);
+            color: var(--text-color);
+            border: 2px solid var(--text-color);
+            padding: 8px 32px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+
+        .modal-button-inner:hover {
+            background-color: rgba(0, 0, 0, 0.25);
+            transform: scale(1.05);
+        }
+
+        .static-border {
+            border: 2px solid #ffffff;
+        }
+
+        .link-text {
+            font-size: 18px;
+            font-family: 'Poppins', sans-serif;
+            margin: 16px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .link-item .link-text {
+            margin: 8px;
+            font-size: 16px;
+        }
+
+        .link-subtitle {
+            font-size: 10px;
+            font-weight: 400;
+            opacity: 1;
+            display: block;
+            margin-top: 2px;
+            color: #ff4444;
+            letter-spacing: 0.5px;
+            animation: textTilt 0.8s ease-in-out infinite;
+        }
+
+        @keyframes textTilt {
+            0%, 100% {
+                transform: skewX(0deg);
+            }
+            25% {
+                transform: skewX(-12deg);
+            }
+            50% {
+                transform: skewX(0deg);
+            }
+            75% {
+                transform: skewX(12deg);
+            }
+        }
+
+        .wave-char {
+            display: inline-block;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            padding: 10px 20px 20px 20px;
+            text-align: center;
+            color: rgb(255, 255, 255);
+            font-size: 12px;
+        }
+        .exclusive-offers {
+            text-align: center;
+            padding: 8px;
+            margin: 0 0 20px 0;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .exclusive-offers p {
+            margin: 0;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        #countdown {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0de7e4;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            animation: countdownGlow 1s ease-in-out infinite, countdownPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes countdownGlow {
+            0%, 100% {
+                text-shadow: 0 0 5px #0de7e4, 0 0 10px rgba(13, 231, 228, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 15px #0de7e4, 0 0 25px rgba(13, 231, 228, 0.7), 0 0 35px rgba(13, 231, 228, 0.4);
+            }
+        }
+
+        @keyframes countdownPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.08);
+            }
+        }
+        .footer a {
+            color: rgba(255, 255, 255, 1);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            opacity: 0.8;
+        }
+
+        .footer span {
+            color: rgba(255, 255, 255, 1);
+            font-weight: 600;
+            margin: 0 8px;
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                padding: 0;
+            }
+
+            .main-wrapper {
+                margin-top: 40px;
+            }
+
+            .profile-section {
+                background-color: #000;
+                border-radius: 40px;
+            }
+
+            .profile-picture {
+                max-height: 75vh;
+            }
+
+            .sticky-header {
+                border-radius: 0;
+            }
+
+            .overlay {
+                background-color: rgba(0, 0, 0, 0.5);
+                backdrop-filter: none;
+            }
+        }
+    </style>
+</head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZG83PYYYL9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZG83PYYYL9');
+</script>
+    
+<body>
+    <!-- Background -->
+    <div class="background"></div>
+    
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-wrapper">
+            <!-- Sticky Header -->
+            <div class="sticky-header">
+                <div class="header-content">
+                    <img 
+                        src="assert\CindyOf1.jpeg"
+                        alt="Pauline"
+                        class="header-image"
+                    />
+                    <div class="header-name">Juicy Lilie</div>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="profile-section">
+                <!-- Profile Picture -->
+                <div class="profile-picture-container">
+                    <div class="overlay-darkening"></div>
+                    <img 
+                        src="assert\CindyOf.jpeg"
+                        alt="Juicy Lilie's profile"
+                        class="profile-picture"
+                    />
+                </div>
+
+                <!-- Name -->
+                <div class="profile-name">
+                    <h1>Juicy Lilie</h1>
+                    <div class="social-icons">
+                        <a href="https://www.instagram.com/thejuicylilie" target="_blank" rel="nofollow noopener noreferrer" title="Instagram">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Offres exclusives -->
+                <div class="exclusive-offers">
+                    <p>Offres exclusives</p>
+                    <div class="countdown-timer">
+                        <span id="countdown">20:00</span>
+                    </div>
+                </div>
+
+                <!-- Liens -->
+                <div class="links-section">
+                    <!-- Lien 1 : OnlyFans -->
+                    <div class="link-item">
+                        <a href="https://onlyfans.com/juicy_lilie" target="_blank" rel="nofollow noopener noreferrer" class="link-button animated-border bounce-animation">
+                            <div class="link-text">
+                                <span>Exclusive Content💄💋</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Lien 2 : MYM -->
+                    <div class="link-item">
+                        <a href="https://mym.fans/Juicy_lilie" target="_blank" rel="nofollow noopener noreferrer" class="link-button link-button-mym animated-border bounce-animation">
+                            <div class="link-text">
+                                <span>My private garden 🌸</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="footer">
+                    <a href="https://onlylinks.com/terms">Terms</a>
+                    <span>|</span>
+                    <a href="https://onlylinks.com/privacy">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    const stickyHeader = document.querySelector('.sticky-header');
+    const profilePictureContainer = document.querySelector('.profile-picture-container');
+    const overlayDarkening = document.querySelector('.overlay-darkening');
+    const profilePicture = document.querySelector('.profile-picture');
+
+    // Décompte de 20 minutes
+    let countdownSeconds = 20 * 60;
+    const countdownElement = document.getElementById('countdown');
+
+    function updateCountdown() {
+        const minutes = Math.floor(countdownSeconds / 60);
+        const seconds = countdownSeconds % 60;
+        countdownElement.textContent = 
+            String(minutes).padStart(2, '0') + ':' + 
+            String(seconds).padStart(2, '0');
+        
+        if (countdownSeconds > 0) {
+            countdownSeconds--;
+        } else {
+            countdownSeconds = 20 * 60;
+        }
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Gestion du noircissement et du header au scroll
+    window.addEventListener('scroll', () => {
+        if (profilePictureContainer && overlayDarkening && stickyHeader) {
+            const imageTop = profilePictureContainer.offsetTop;
+            const imageHeight = profilePictureContainer.offsetHeight;
+            const scrollY = window.scrollY;
+            
+            const scrolledAmount = Math.max(0, scrollY - imageTop);
+            let scrollPercent = scrolledAmount / (imageHeight * 0.37);
+            scrollPercent = Math.min(1, scrollPercent);
+            
+            overlayDarkening.style.opacity = scrollPercent;
+            
+            if (scrollPercent > 0.2) {
+                stickyHeader.classList.add('visible');
+            } else {
+                stickyHeader.classList.remove('visible');
+            }
+        }
+    });
+
+    if (profilePicture) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    stickyHeader.classList.add('visible');
+                } else {
+                    stickyHeader.classList.remove('visible');
+                }
+            });
+        }, {
+            threshold: 0.3
+        });
+
+        observer.observe(profilePicture);
+    }
+
+    // Transformation du bouton au clic
+    document.querySelectorAll('.link-button').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            if (button.classList.contains('modal-state')) {
+                const href = button.getAttribute('data-href');
+                window.open(href, '_blank');
+                return;
+            }
+
+            const href = button.getAttribute('href');
+            button.setAttribute('data-href', href);
+            
+            const originalHTML = button.innerHTML;
+            button.setAttribute('data-original', originalHTML);
+            
+            button.classList.add('modal-state');
+            button.innerHTML = `
+                <div class="modal-icon">🔞</div>
+                <div class="modal-title">Sensitive Content</div>
+                <div class="modal-text">This link may contain sensitive content.<br>Are you over 18 years old?</div>
+                <button class="modal-button-inner">Continue</button>
+            `;
+        });
+    });
+</script>
