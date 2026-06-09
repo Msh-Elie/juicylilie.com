@@ -1,726 +1,600 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juicylilie</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Juicylilie</title>
+  <meta name="description" content="Discover my profile.">
+  <meta name="theme-color" content="#000000">
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #000;
-            color: #fff;
-            min-height: 60vh;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-        }
 
-        .container {
-            position: relative;
-            z-index: 10;
-            padding: 0 20px 0 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        @media (max-width: 1023px) {
-            .container {
-                padding: 0 0 0 0;
-            }
-        }
+    html, body {
+      min-height: 100%;
+      background: #000;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+    }
 
-        .main-wrapper {
-            margin: 0 auto;
-            max-width: 448px;
-            width: 100%;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
+    .page {
+      min-height: 100vh;
+      position: relative;
+      padding-top: 1rem;
+      padding-bottom: 2rem;
+      background: #000;
+    }
 
-        @media (max-width: 1023px) {
-            .main-wrapper {
-                max-width: none;
-            }
-        }
+    .bg-blur {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: blur(30px) brightness(0.4);
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+      transform: scale(1.05);
+    }
 
-        /* Background */
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('assert/CindyOf.jpeg');
-            background-size: cover;
-            background-position: top center;
-            background-attachment: fixed;
-            z-index: 0;
-        }
+    .card {
+      position: relative;
+      z-index: 10;
+      width: 420px;
+      max-width: 95vw;
+      margin: 0 auto;
+      background: #000;
+      border-radius: 24px;
+      overflow: hidden;
+      min-height: 80vh;
+    }
 
-        @media (max-width: 1023px) {
-            .background {
-                display: none;
-            }
-        }
+    .cover {
+      position: relative;
+      height: 295px;
+      overflow: hidden;
+      line-height: 0;
+    }
 
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(12px);
-            z-index: 1;
-        }
+    .cover img.cover-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 100%;
+    }
 
-        /* Sticky Header */
-        .sticky-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            z-index: 50;
-            border-radius: 0;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
+    .cover::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top,
+        #000 0%,
+        rgba(0,0,0,0.92) 5%,
+        rgba(0,0,0,0.75) 15%,
+        rgba(0,0,0,0.4) 30%,
+        transparent 55%
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
 
-        .sticky-header.visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
+    .cover-info {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%;
+      padding: 0 16px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 3;
+    }
 
-        .header-content {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-        }
+    .cover-name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
 
-        .header-image {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin-right: 12px;
-            object-fit: cover;
-        }
+    .cover-name-row h1 {
+      font-size: 46px;
+      font-family: Arial, sans-serif;
+      font-weight: 600;
+      color: #fff;
+      text-shadow: 2px 2px 19px rgba(11,11,11,1);
+      line-height: 1.1;
+    }
 
-        .header-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: #fff;
-        }
+    .blue-tick {
+      width: 24px; height: 24px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
 
-        /* Profile Section */
-        .profile-section {
-            padding-top: 0;
-            background-color: #000;
-            border-radius: 40px;
-            overflow: hidden;
-        }
+    .online-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #fff;
+      border-radius: 999px;
+      padding: 6px 16px 6px 12px;
+      margin: 0 0 26px;
+    }
 
-        @media (max-width: 1023px) {
-            .profile-section {
-                border-radius: 0;
-            }
-        }
+    .dot-wrap { position: relative; width: 12px; height: 12px; flex-shrink: 0; }
+    .dot {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgb(34,197,94);
+    }
+    .dot-ping {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgb(34,197,94);
+      opacity: 0.7;
+      animation: ping 2s cubic-bezier(0,0,0.8,1) infinite;
+    }
+    @keyframes ping {
+      0%   { transform: scale(1); opacity: 0.7; }
+      75%, 100% { transform: scale(2.2); opacity: 0; }
+    }
+    .online-badge span {
+      color: #1f2937;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
 
-        .profile-picture-container {
-            position: relative;
-            width: 100%;
-        }
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 16px 28px;
+    }
 
-        .profile-picture-container .overlay-darkening {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            opacity: 0;
-            z-index: 3;
-            pointer-events: none;
-            transition: opacity 0.1s ease-out;
-        }
+    .social-btn {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      flex-shrink: 0;
+      transition: transform 0.15s;
+    }
+    .social-btn:hover { transform: scale(1.12); }
+    .social-btn img {
+      width: 18px; height: 18px;
+      object-fit: contain;
+      display: block;
+    }
 
-        .profile-picture {
-            width: 100%;
-            height: auto;
-            max-height: 46vh;
-            object-fit: cover;
-            object-position: 50% 60%;
-            mask-image: linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 90%, rgba(0, 0, 0, 0) 100%);
-            -webkit-mask-image: linear-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 90%, rgba(0, 0, 0, 0) 100%);
-            position: relative;
-            z-index: 2;
-        }
+    .countdown-banner {
+      margin: 0 16px 20px;
+      background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+      border: 1.5px solid #333;
+      border-radius: 20px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
 
-        .profile-name {
-            padding: 16px 20px 8px 20px;
-            margin-bottom: 10px;
-            margin-top: -30px;
-            position: relative;
-            z-index: 5;
-        }
+    .countdown-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      flex: 1;
+      min-width: 0;
+    }
 
-        .profile-name h1 {
-            font-size: 32px;
-            font-weight: 600;
-            text-align: center;
-            color: #fff;
-            line-height: 1.2;
-        }
+    .countdown-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #ff4d4d;
+      white-space: nowrap;
+    }
 
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 18px;
-            margin-bottom: 0;
-        }
+    .countdown-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-        .social-icons a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 18px;
-            height: 18px;
-            text-decoration: none;
-            transition: transform 0.2s ease;
-        }
+    .countdown-digits {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+    }
 
-        .social-icons a:hover {
-            transform: scale(1.1);
-        }
+    .cd-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+    }
 
-        .social-icons svg {
-            width: 100%;
-            height: 100%;
-            stroke: none;
-            fill: #fff;
-            stroke-width: 0;
-            opacity: 0.9;
-        }
+    .cd-box {
+      background: #000;
+      border: 1.5px solid #333;
+      border-radius: 8px;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #fff;
+    }
 
-        /* Liens */
-        .links-section {
-            margin: 0 auto;
-            width: 100%;
-            max-width: 460px;
-            padding: 0 1.25rem;
-            margin-top: 20px;
-        }
+    .cd-label {
+      font-size: 8px;
+      color: #666;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
 
-        .link-item {
-            margin: 20px 0;
-        }
+    .cd-sep {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ff4d4d;
+      margin-bottom: 14px;
+      line-height: 1;
+    }
 
-        .link-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            max-width: 460px;
-            padding: 10px 8px;
-            margin: 20px 0;
-            border-radius: 36px;
-            background-color: #0de7e4;
-            color: rgb(5, 5, 5);
-            text-decoration: none;
-            text-transform: none;
-            box-shadow: none;
-            cursor: pointer;
-            transition: transform 0.2s;
-            position: relative;
-            min-height: 10px;
-        }
+    .links-grid {
+      padding: 0 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-        .link-button:hover {
-            transform: scale(1.02);
-        }
+    .link-card {
+      height: 180px;
+      position: relative;
+      border-radius: 46px;
+      overflow: hidden;
+      border: 3px solid rgb(126,126,126);
+      background: #111;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: block;
+      text-decoration: none;
+    }
 
-        /* Bouton MYM — style distinct */
-        .link-button-mym {
-            background-color: #ff3e6c;
-            color: #fff;
-        }
+    .link-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
 
-        /* Animation bounce */
-        .bounce-animation {
-            animation: bounce 2s infinite;
-        }
+    .link-card img.card-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 100%;
+      transition: filter 0.3s;
+    }
 
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
+    .link-card .card-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.5), transparent);
+      opacity: 0.8;
+      z-index: 1;
+      transition: filter 0.3s;
+    }
 
-        /* Bordure animée */
-        .animated-border {
-            border: none;
-        }
+    .link-card .card-text {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 2;
+      padding-bottom: 14px;
+      text-align: center;
+      transition: filter 0.3s;
+    }
 
-        .animated-border::before,
-        .animated-border::after {
-            content: "";
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            border: 2px solid #ffffff;
-            transition: all 0.5s;
-            animation: clippath 3s infinite linear;
-            border-radius: 36px;
-            pointer-events: none;
-        }
+    .link-card h3 {
+      font-size: 21px;
+      font-weight: 600;
+      color: #fff;
+    }
 
-        .animated-border::after {
-            animation: clippath 3s infinite -1.5s linear;
-        }
+    .link-card p {
+      font-size: 15px;
+      color: #d1d5db;
+      font-weight: 500;
+      margin-top: 4px;
+    }
 
-        @keyframes clippath {
-            0%, 100% {
-                clip-path: inset(0 0 98% 0);
-            }
-            25% {
-                clip-path: inset(0 98% 0 0);
-            }
-            50% {
-                clip-path: inset(98% 0 0 0);
-            }
-            75% {
-                clip-path: inset(0 0 0 98%);
-            }
-        }
+    /* ─── OVERLAY ─── */
+    .sensitive-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+    }
 
-        /* Animation de clic */
-        @keyframes buttonClick {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(0.95);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 0.5;
-            }
-        }
+    .sensitive-badge {
+      background: #000000;
+      color: #ffffff;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+    }
 
-        .link-button.clicked {
-            animation: buttonClick 0.6s ease forwards;
-        }
+    .sensitive-badge svg { width: 16px; height: 16px; flex-shrink: 0; }
 
-        /* Bouton transformé en modal */
-        .link-button.modal-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: auto;
-            padding: 25px 20px;
-            height: auto;
-        }
+    /* ─── ÉTAT RÉVÉLÉ ─── */
+    .link-card.revealed .card-bg,
+    .link-card.revealed .card-gradient,
+    .link-card.revealed .card-text {
+      filter: blur(12px);
+    }
 
-        .modal-icon {
-            font-size: 28px;
-            margin-bottom: 8px;
-            line-height: 1;
-        }
+    .link-card.revealed .sensitive-overlay {
+      display: flex;
+    }
 
-        .modal-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-color);
-            margin-bottom: 6px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-        }
+    .page-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-size: 12px;
+      opacity: 0.15;
+      color: rgba(255,255,255,0.9);
+      padding: 20px 0 24px;
+    }
+    .page-footer a { color: inherit; text-decoration: underline; }
 
-        .modal-text {
-            font-size: 12px;
-            color: var(--text-color);
-            margin-bottom: 12px;
-            line-height: 1.3;
-            text-align: center;
-            font-family: 'Segoe UI', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-weight: 400;
-            letter-spacing: 0.3px;
-        }
-
-        .modal-button-inner {
-            background-color: rgba(0, 0, 0, 0.15);
-            color: var(--text-color);
-            border: 2px solid var(--text-color);
-            padding: 8px 32px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-        }
-
-        .modal-button-inner:hover {
-            background-color: rgba(0, 0, 0, 0.25);
-            transform: scale(1.05);
-        }
-
-        .static-border {
-            border: 2px solid #ffffff;
-        }
-
-        .link-text {
-            font-size: 18px;
-            font-family: 'Poppins', sans-serif;
-            margin: 16px;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .link-item .link-text {
-            margin: 8px;
-            font-size: 16px;
-        }
-
-        .link-subtitle {
-            font-size: 10px;
-            font-weight: 400;
-            opacity: 1;
-            display: block;
-            margin-top: 2px;
-            color: #ff4444;
-            letter-spacing: 0.5px;
-            animation: textTilt 0.8s ease-in-out infinite;
-        }
-
-        @keyframes textTilt {
-            0%, 100% {
-                transform: skewX(0deg);
-            }
-            25% {
-                transform: skewX(-12deg);
-            }
-            50% {
-                transform: skewX(0deg);
-            }
-            75% {
-                transform: skewX(12deg);
-            }
-        }
-
-        .wave-char {
-            display: inline-block;
-        }
-
-        /* Footer */
-        .footer {
-            margin-top: 10px;
-            margin-bottom: 20px;
-            padding: 10px 20px 20px 20px;
-            text-align: center;
-            color: rgb(255, 255, 255);
-            font-size: 12px;
-        }
-        .exclusive-offers {
-            text-align: center;
-            padding: 8px;
-            margin: 0 0 20px 0;
-            color: #fff;
-            font-size: 18px;
-            font-weight: 700;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .exclusive-offers p {
-            margin: 0;
-        }
-
-        .countdown-timer {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-
-        #countdown {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0de7e4;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 2px;
-            animation: countdownGlow 1s ease-in-out infinite, countdownPulse 1s ease-in-out infinite;
-        }
-
-        @keyframes countdownGlow {
-            0%, 100% {
-                text-shadow: 0 0 5px #0de7e4, 0 0 10px rgba(13, 231, 228, 0.5);
-            }
-            50% {
-                text-shadow: 0 0 15px #0de7e4, 0 0 25px rgba(13, 231, 228, 0.7), 0 0 35px rgba(13, 231, 228, 0.4);
-            }
-        }
-
-        @keyframes countdownPulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.08);
-            }
-        }
-        .footer a {
-            color: rgba(255, 255, 255, 1);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-weight: 600;
-        }
-
-        .footer a:hover {
-            opacity: 0.8;
-        }
-
-        .footer span {
-            color: rgba(255, 255, 255, 1);
-            font-weight: 600;
-            margin: 0 8px;
-        }
-
-        @media (min-width: 1024px) {
-            .container {
-                padding: 0;
-            }
-
-            .main-wrapper {
-                margin-top: 40px;
-            }
-
-            .profile-section {
-                background-color: #000;
-                border-radius: 40px;
-            }
-
-            .profile-picture {
-                max-height: 77vh;
-            }
-
-            .sticky-header {
-                border-radius: 0;
-            }
-
-            .overlay {
-                background-color: rgba(0, 0, 0, 0.5);
-                backdrop-filter: none;
-            }
-        }
-    </style>
+    @media (max-width: 480px) {
+      .card { width: 100%; border-radius: 0; }
+      .cover-name-row h1 { font-size: 38px; }
+      .countdown-title { font-size: 10px; }
+      .countdown-banner { padding: 8px 12px; gap: 8px; }
+      .cd-box { width: 34px; height: 34px; font-size: 18px; }
+      .cd-sep { font-size: 16px; margin-bottom: 12px; }
+    }
+  </style>
 </head>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZG83PYYYL9"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-ZG83PYYYL9');
-</script>
-    
 <body>
-    <!-- Background -->
-    <div class="background"></div>
-    
-    <!-- Overlay -->
-    <div class="overlay"></div>
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="main-wrapper">
-            <!-- Sticky Header -->
-            <div class="sticky-header">
-                <div class="header-content">
-                    <img 
-                        src="assert\CindyOf.jpeg"
-                        alt="Juicylilie"
-                        class="header-image"
-                    />
-                    <div class="header-name">Juicy Lilie</div>
-                </div>
-            </div>
+<div class="page">
 
-            <!-- Profile Section -->
-            <div class="profile-section">
-                <!-- Profile Picture -->
-                <div class="profile-picture-container">
-                    <div class="overlay-darkening"></div>
-                    <img 
-                        src="assert\CindyOf.jpeg"
-                        alt="Juicy Lilie's profile"
-                        class="profile-picture"
-                    />
-                </div>
+  <img
+    class="bg-blur"
+    src="assert/pp.jpeg"
+    alt=""
+  >
 
-                <!-- Name -->
-                <div class="profile-name">
-                    <h1>Juicy Lilie</h1>
-                    <div class="social-icons">
-                        <a href="https://www.instagram.com/thejuicylilie" target="_blank" rel="nofollow noopener noreferrer" title="Instagram">
-                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
+  <div class="card">
 
-                <!-- Offres exclusives -->
-                <div class="exclusive-offers">
-                    <p>GRATUIT ⏳</p>
-                    <div class="countdown-timer">
-                        <span id="countdown">20:00</span>
-                    </div>
-                </div>
-
-                <!-- Liens -->
-                <div class="links-section">
-                    <!-- Lien 1 : OnlyFans -->
-                    <div class="link-item">
-                        <a href="https://onlyfans.com/juicy_lilie/c6" target="_blank" rel="nofollow noopener noreferrer" class="link-button animated-border bounce-animation">
-                            <div class="link-text">
-                                <span>Exclusive Content💄💋</span>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Lien 2 : MYM -->
-                    <div class="link-item">
-                        <a href="https://mym.fans/app/t/hijojyeufhBqb3Z" target="_blank" rel="nofollow noopener noreferrer" class="link-button link-button-mym animated-border bounce-animation">
-                            <div class="link-text">
-                                <span>My private garden 🌸</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Footer -->
-                <div class="footer">
-                    <a href="https://onlylinks.com/terms">Terms</a>
-                    <span>|</span>
-                    <a href="https://onlylinks.com/privacy">Privacy Policy</a>
-                </div>
-            </div>
+    <!-- COVER -->
+    <div class="cover">
+      <img
+        class="cover-photo"
+        src="assert/pp.jpeg"
+        alt="Juicylilie cover"
+        style="object-position: center 100%;"
+      >
+      <div class="cover-info">
+        <div class="cover-name-row">
+          <h1>Juicylilie</h1>
+          <img
+            class="blue-tick"
+            src="https://assets.linkscale.to/icons/blue-tick/icon-blue-tick.png"
+            alt="verified"
+          >
         </div>
+        <div class="online-badge">
+          <div class="dot-wrap">
+            <div class="dot-ping"></div>
+            <div class="dot"></div>
+          </div>
+          <span>Online</span>
+        </div>
+      </div>
     </div>
+
+    <!-- SOCIALS -->
+    <div class="socials">
+      <a
+        class="social-btn"
+        href="https://www.instagram.com/thejuicylilie"
+        target="_blank" rel="nofollow noopener noreferrer"
+        aria-label="Instagram"
+      >
+        <img src="https://assets.linkscale.to/instagram-icon-color.png" alt="Instagram">
+      </a>
+      <a
+        class="social-btn"
+        href="https://t.me/+nAdhPvfWAoZlOTVk"
+        target="_blank" rel="nofollow noopener noreferrer"
+        aria-label="Telegram"
+      >
+        <img src="https://assets.linkscale.to/telegram-icon-color.png" alt="Telegram">
+      </a>
+    </div>
+
+    <!-- COUNTDOWN BANNER -->
+    <div class="countdown-banner">
+      <div class="countdown-left">
+        <span class="countdown-label">🎁 SPECIAL OFFER</span>
+        <span class="countdown-title">Offre limitée — dépêche-toi !</span>
+      </div>
+      <div class="countdown-digits">
+        <div class="cd-unit">
+          <div class="cd-box" id="cd-h">00</div>
+          <span class="cd-label">Hrs</span>
+        </div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit">
+          <div class="cd-box" id="cd-m">24</div>
+          <span class="cd-label">Min</span>
+        </div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit">
+          <div class="cd-box" id="cd-s">00</div>
+          <span class="cd-label">Sec</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LINK CARDS -->
+    <div class="links-grid">
+
+      <!-- Card 1: Exclusive Content -->
+      <a
+        class="link-card sensitive-card"
+        href="https://onlyfans.com/juicy_lilie/c6"
+        target="_blank" rel="nofollow noopener noreferrer"
+        data-label="OF"
+      >
+        <img
+          class="card-bg"
+          src="assert/exclusif.jpeg"
+          alt="Exclusive Content"
+          style="object-position: center 100%;"
+        >
+        <div class="card-gradient"></div>
+        <div class="card-text">
+          <h3>Exclusive Content 🌶️</h3>
+          <p>OF</p>
+        </div>
+
+        <div class="sensitive-overlay">
+          <div class="sensitive-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7A9.97 9.97 0 014.02 8.971m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+            </svg>
+            <span>Contenu sensible</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2: Secret Garden -->
+      <a
+        class="link-card sensitive-card"
+        href="https://mym.fans/app/t/hijojyeufhBqb3Z"
+        target="_blank" rel="nofollow noopener noreferrer"
+        data-label="Mym"
+      >
+        <img
+          class="card-bg"
+          src="assert/secret.jpeg"
+          alt="Secret Garden"
+          style="object-position: center 100%;"
+        >
+        <div class="card-gradient"></div>
+        <div class="card-text">
+          <h3>Secret Garden 🔥</h3>
+          <p>Mym</p>
+        </div>
+
+        <div class="sensitive-overlay">
+          <div class="sensitive-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7A9.97 9.97 0 014.02 8.971m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+            </svg>
+            <span>Contenu sensible</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="page-footer">
+      <a href="https://linkscale.to/report" target="_blank" rel="noopener noreferrer">Report</a>
+      <a href="https://linkscale.to/terms" target="_blank" rel="noopener noreferrer">Terms</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── Countdown ──────────────────────────────────────────────
+  const endTime = Date.now() + (24 * 3600 + 0 * 60) * 1000;
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tick() {
+    const diff = Math.max(0, endTime - Date.now());
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('cd-h').textContent = pad(h);
+    document.getElementById('cd-m').textContent = pad(m);
+    document.getElementById('cd-s').textContent = pad(s);
+
+    if (diff > 0) requestAnimationFrame(() => setTimeout(tick, 200));
+  }
+
+  tick();
+
+  // ── Sensitive cards (logique simplifiée et corrigée) ───────
+  (function() {
+    const sensitiveCards = document.querySelectorAll('.sensitive-card');
+
+    sensitiveCards.forEach(function(card) {
+      let revealed = false;
+
+      card.addEventListener('click', function(e) {
+        if (!revealed) {
+          // 1er clic : on montre l'overlay, on bloque le lien
+          e.preventDefault();
+          card.classList.add('revealed');
+          revealed = true;
+        }
+        // Si déjà révélé (2e clic) : on laisse le navigateur suivre le href
+        // (pas de preventDefault)
+        else {
+          // Tracker l'événement Facebook
+          const label = card.getAttribute('data-label') || 'link';
+          if (typeof fbq !== 'undefined') {
+            fbq('track', 'Lead', {
+              content_name: label,
+              content_category: 'sensitive_content'
+            });
+          }
+          // On remet à zéro pour la prochaine visite
+          card.classList.remove('revealed');
+          revealed = false;
+          // Le lien s'ouvre normalement car on n'a pas appelé preventDefault()
+        }
+      });
+    });
+  })();
+</script>
+
 </body>
 </html>
-<script>
-    const stickyHeader = document.querySelector('.sticky-header');
-    const profilePictureContainer = document.querySelector('.profile-picture-container');
-    const overlayDarkening = document.querySelector('.overlay-darkening');
-    const profilePicture = document.querySelector('.profile-picture');
-
-    // Décompte de 20 minutes
-    let countdownSeconds = 20 * 60;
-    const countdownElement = document.getElementById('countdown');
-
-    function updateCountdown() {
-        const minutes = Math.floor(countdownSeconds / 60);
-        const seconds = countdownSeconds % 60;
-        countdownElement.textContent = 
-            String(minutes).padStart(2, '0') + ':' + 
-            String(seconds).padStart(2, '0');
-        
-        if (countdownSeconds > 0) {
-            countdownSeconds--;
-        } else {
-            countdownSeconds = 20 * 60;
-        }
-    }
-
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-
-    // Gestion du noircissement et du header au scroll
-    window.addEventListener('scroll', () => {
-        if (profilePictureContainer && overlayDarkening && stickyHeader) {
-            const imageTop = profilePictureContainer.offsetTop;
-            const imageHeight = profilePictureContainer.offsetHeight;
-            const scrollY = window.scrollY;
-            
-            const scrolledAmount = Math.max(0, scrollY - imageTop);
-            let scrollPercent = scrolledAmount / (imageHeight * 0.37);
-            scrollPercent = Math.min(1, scrollPercent);
-            
-            overlayDarkening.style.opacity = scrollPercent;
-            
-            if (scrollPercent > 0.2) {
-                stickyHeader.classList.add('visible');
-            } else {
-                stickyHeader.classList.remove('visible');
-            }
-        }
-    });
-
-    if (profilePicture) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) {
-                    stickyHeader.classList.add('visible');
-                } else {
-                    stickyHeader.classList.remove('visible');
-                }
-            });
-        }, {
-            threshold: 0.3
-        });
-
-        observer.observe(profilePicture);
-    }
-
-    // Transformation du bouton au clic
-    document.querySelectorAll('.link-button').forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            if (button.classList.contains('modal-state')) {
-                const href = button.getAttribute('data-href');
-                window.open(href, '_blank');
-                return;
-            }
-
-            const href = button.getAttribute('href');
-            button.setAttribute('data-href', href);
-            
-            const originalHTML = button.innerHTML;
-            button.setAttribute('data-original', originalHTML);
-            
-            button.classList.add('modal-state');
-            button.innerHTML = `
-                <div class="modal-icon">🔞</div>
-                <div class="modal-title">Sensitive Content</div>
-                <div class="modal-text">This link may contain sensitive content.<br>Are you over 18 years old?</div>
-                <button class="modal-button-inner">Continue</button>
-            `;
-        });
-    });
-</script>
