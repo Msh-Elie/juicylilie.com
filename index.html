@@ -7,7 +7,6 @@
   <meta name="description" content="Discover my profile.">
   <meta name="theme-color" content="#000000">
 
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -353,6 +352,26 @@
       display: flex;
     }
 
+    /* ─── ANIMATION SHAKE (attirer l'attention) ─── */
+    @keyframes shake-attention {
+      0%, 100%      { transform: rotate(0deg)   scale(1);     }
+      10%, 30%, 50% { transform: rotate(-1.5deg) scale(1.015); }
+      20%, 40%, 60% { transform: rotate(1.5deg)  scale(1.015); }
+      70%           { transform: rotate(0deg)   scale(1);     }
+    }
+
+    .shake {
+      animation: shake-attention 2.5s ease-in-out infinite;
+      transform-origin: center center;
+      will-change: transform;
+    }
+
+    /* On coupe l'animation au survol pour ne pas gêner la lecture */
+    .shake:hover {
+      animation: none;
+      transform: scale(1.02);
+    }
+
     .page-footer {
       display: flex;
       align-items: center;
@@ -443,9 +462,9 @@
     <!-- LINK CARDS -->
     <div class="links-grid">
 
-      <!-- Card 1: Exclusive Content -->
+      <!-- Card 1: Exclusive Content (avec animation shake) -->
       <a
-        class="link-card sensitive-card"
+        class="link-card sensitive-card shake"
         href="https://rebrand.ly/privategarden"
         target="_blank" rel="nofollow noopener noreferrer"
         data-label="OF"
