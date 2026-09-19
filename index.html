@@ -7,6 +7,25 @@
   <meta name="description" content="Discover my profile.">
   <meta name="theme-color" content="#000000">
 
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1364627619053376');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1364627619053376&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+
+  <meta name="facebook-domain-verification" content="xchpwgee097iafhlyyc0ue4hqdenye" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -433,14 +452,13 @@
       </a>
     </div>
 
-
     <!-- LINK CARDS -->
     <div class="links-grid">
 
       <!-- Card 1: Exclusive Content -->
       <a
         class="link-card sensitive-card"
-        href="https://onlyfans.com/juicy_lilie/c6"
+        href="https://onlyfans.com/juicy_lilie/c56"
         target="_blank" rel="nofollow noopener noreferrer"
         data-label="OF"
       >
@@ -470,7 +488,7 @@
       <!-- Card 2: Secret Garden -->
       <a
         class="link-card sensitive-card"
-        href="https://mym.fans/app/t/hijojyeufhBqb3Z"
+        href="https://mym.fans/app/t/hiw57nw8vcJ4sfv"
         target="_blank" rel="nofollow noopener noreferrer"
         data-label="Mym"
       >
@@ -528,7 +546,7 @@
 
   tick();
 
-  // ── Sensitive cards (logique simplifiée et corrigée) ───────
+  // ── Sensitive cards ────────────────────────────────────────
   (function() {
     const sensitiveCards = document.querySelectorAll('.sensitive-card');
 
@@ -537,15 +555,11 @@
 
       card.addEventListener('click', function(e) {
         if (!revealed) {
-          // 1er clic : on montre l'overlay, on bloque le lien
           e.preventDefault();
           card.classList.add('revealed');
           revealed = true;
         }
-        // Si déjà révélé (2e clic) : on laisse le navigateur suivre le href
-        // (pas de preventDefault)
         else {
-          // Tracker l'événement Facebook
           const label = card.getAttribute('data-label') || 'link';
           if (typeof fbq !== 'undefined') {
             fbq('track', 'Lead', {
@@ -553,10 +567,8 @@
               content_category: 'sensitive_content'
             });
           }
-          // On remet à zéro pour la prochaine visite
           card.classList.remove('revealed');
           revealed = false;
-          // Le lien s'ouvre normalement car on n'a pas appelé preventDefault()
         }
       });
     });
