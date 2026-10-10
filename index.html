@@ -268,6 +268,11 @@
       transition: transform 0.2s, box-shadow 0.2s;
       display: block;
       text-decoration: none;
+      /* ─── FIX MOBILE : force un vrai clipping du flou ─── */
+      isolation: isolate;
+      -webkit-mask-image: -webkit-radial-gradient(white, black);
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
     }
 
     .link-card:hover {
@@ -281,7 +286,11 @@
       width: 100%; height: 100%;
       object-fit: cover;
       object-position: center 100%;
-      transition: filter 0.3s;
+      transform: scale(1);
+      transition: filter 0.3s, transform 0.3s;
+      /* ─── FIX MOBILE : force l'image dans sa propre couche ─── */
+      transform-origin: center center;
+      will-change: filter, transform;
     }
 
     .link-card .card-gradient {
@@ -315,7 +324,7 @@
       margin-top: 4px;
     }
 
-    /* ─── OVERLAY ─── */
+    /* ─── OVERLAY SENSIBLE ─── */
     .sensitive-overlay {
       position: absolute;
       inset: 0;
@@ -342,8 +351,12 @@
 
     .sensitive-badge svg { width: 16px; height: 16px; flex-shrink: 0; }
 
-    /* ─── ÉTAT RÉVÉLÉ ─── */
-    .link-card.revealed .card-bg,
+    /* ─── ÉTAT FLOUTÉ ─── */
+    .link-card.revealed .card-bg {
+      filter: blur(12px);
+      transform: scale(1.15); /* pousse les bords flous hors du cadre */
+    }
+
     .link-card.revealed .card-gradient,
     .link-card.revealed .card-text {
       filter: blur(12px);
@@ -478,44 +491,39 @@
 </div>
 
 <script>
-  // ── Countdown ──────────────────────────────────────────────
-  const endTime = Date.now() + (24 * 3600 + 0 * 60) * 1000;
-
-  function pad(n) { return String(n).padStart(2, '0'); }
-
-  function tick() {
-    const diff = Math.max(0, endTime - Date.now());
-    const h = Math.floor(diff / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-
-    document.getElementById('cd-h').textContent = pad(h);
-    document.getElementById('cd-m').textContent = pad(m);
-    document.getElementById('cd-s').textContent = pad(s);
-
-    if (diff > 0) requestAnimationFrame(() => setTimeout(tick, 200));
-  }
-
-  tick();
-
-  // ── Sensitive cards (logique simplifiée et corrigée) ───────
+  // ── Countdown (ne tourne que si le bandeau existe dans la page) ──
   (function() {
-    const sensitiveCards = document.querySelectorAll('.sensitive-card');
+    const hEl = document.getElementById('cd-h');
+    const mEl = document.getElementById('cd-m');
+    const sEl = document.getElementById('cd-s');
+    if (!hEl || !mEl || !sEl) return;
 
-    sensitiveCards.forEach(function(card) {
-      let revealed = false;
+    const endTime = Date.now() + (24 * 3600 + 0 * 60) * 1000;
+    function pad(n) { return String(n).padStart(2, '0'); }
 
+    function tick() {
+      const diff = Math.max(0, endTime - Date.now());
+      hEl.textContent = pad(Math.floor(diff / 3600000));
+      mEl.textContent = pad(Math.floor((diff % 3600000) / 60000));
+      sEl.textContent = pad(Math.floor((diff % 60000) / 1000));
+      if (diff > 0) setTimeout(tick, 200);
+    }
+    tick();
+  })();
+
+  // ── Cartes sensibles : contenu visible par défaut ──
+  // 1er clic  : la carte se floute + badge "Contenu sensible" apparaît
+  // 2e clic   : le lien s'ouvre dans un nouvel onglet (+ event Lead si pixel présent)
+  // Si on clique sur une autre carte pendant qu'une est floutée,
+  // la précédente redevient visible et la nouvelle se floute.
+  (function() {
+    const cards = document.querySelectorAll('.sensitive-card');
+    let currentlyRevealed = null;
+
+    cards.forEach(function(card) {
       card.addEventListener('click', function(e) {
-        if (!revealed) {
-          // 1er clic : on montre l'overlay, on bloque le lien
-          e.preventDefault();
-          card.classList.add('revealed');
-          revealed = true;
-        }
-        // Si déjà révélé (2e clic) : on laisse le navigateur suivre le href
-        // (pas de preventDefault)
-        else {
-          // Tracker l'événement Facebook
+        // Cas 1 : cette carte est déjà floutée → on laisse le lien s'ouvrir
+        if (card.classList.contains('revealed')) {
           const label = card.getAttribute('data-label') || 'link';
           if (typeof fbq !== 'undefined') {
             fbq('track', 'Lead', {
@@ -523,11 +531,20 @@
               content_category: 'sensitive_content'
             });
           }
-          // On remet à zéro pour la prochaine visite
           card.classList.remove('revealed');
-          revealed = false;
-          // Le lien s'ouvre normalement car on n'a pas appelé preventDefault()
+          currentlyRevealed = null;
+          return; // navigation normale (target="_blank")
         }
+
+        // Cas 2 : une autre carte est floutée → on la défloute
+        if (currentlyRevealed && currentlyRevealed !== card) {
+          currentlyRevealed.classList.remove('revealed');
+        }
+
+        // Cas 3 : on floute la carte cliquée et on bloque la navigation
+        e.preventDefault();
+        card.classList.add('revealed');
+        currentlyRevealed = card;
       });
     });
   })();
