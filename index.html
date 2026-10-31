@@ -361,6 +361,7 @@
       display: flex;
     }
 
+    /* ─── Shake générique (grande carte OF) ─── */
     @keyframes shake-attention {
       0%, 100%      { transform: translateZ(0) rotate(0deg)    scale(1);     }
       10%, 30%, 50% { transform: translateZ(0) rotate(-1.5deg) scale(1.015); }
@@ -380,11 +381,39 @@
       transform: translateZ(0) scale(1.02);
     }
 
-    /* On garde le zoom hover des petits boutons sociaux (1.12)
-       quand l'animation shake est mise en pause au survol */
+    /* ─── Shake dédié au petit bouton rond Reveal ───
+       Rotation bien plus ample (±12°) + scale plus marqué + halo rouge qui pulse
+       pour que l'animation soit réellement visible sur 34 px. */
+    @keyframes shake-reveal {
+      0%   {
+        transform: translateZ(0) rotate(0deg) scale(1);
+        box-shadow: 0 0 0 0 rgba(255,77,77,0.75);
+      }
+      6%   { transform: translateZ(0) rotate(-12deg) scale(1.18); }
+      12%  { transform: translateZ(0) rotate(12deg)  scale(1.18); }
+      18%  { transform: translateZ(0) rotate(-10deg) scale(1.15); }
+      24%  { transform: translateZ(0) rotate(10deg)  scale(1.15); }
+      30%  { transform: translateZ(0) rotate(0deg)   scale(1.05); }
+      45%  {
+        transform: translateZ(0) rotate(0deg) scale(1);
+        box-shadow: 0 0 0 10px rgba(255,77,77,0);
+      }
+      100% {
+        transform: translateZ(0) rotate(0deg) scale(1);
+        box-shadow: 0 0 0 0 rgba(255,77,77,0);
+      }
+    }
+
+    .social-btn.shake {
+      animation: shake-reveal 2s ease-in-out infinite;
+      will-change: transform, box-shadow;
+    }
+
+    /* Au survol : pause + zoom 1.12 comme les autres boutons sociaux */
     .social-btn.shake:hover {
       animation: none;
       transform: translateZ(0) scale(1.12);
+      box-shadow: none;
     }
 
     .page-footer {
