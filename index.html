@@ -267,7 +267,6 @@
       transition: transform 0.2s, box-shadow 0.2s;
       display: block;
       text-decoration: none;
-      /* ─── FIX MOBILE : force un vrai clipping du flou ─── */
       isolation: isolate;
       -webkit-mask-image: -webkit-radial-gradient(white, black);
       transform: translateZ(0);
@@ -287,7 +286,6 @@
       object-position: center 100%;
       transform: scale(1);
       transition: filter 0.3s, transform 0.3s;
-      /* ─── FIX MOBILE : force l'image dans sa propre couche ─── */
       transform-origin: center center;
       will-change: filter, transform;
     }
@@ -323,7 +321,6 @@
       margin-top: 4px;
     }
 
-    /* ─── OVERLAY SENSIBLE ─── */
     .sensitive-overlay {
       position: absolute;
       inset: 0;
@@ -350,10 +347,9 @@
 
     .sensitive-badge svg { width: 16px; height: 16px; flex-shrink: 0; }
 
-    /* ─── ÉTAT FLOUTÉ ─── */
     .link-card.revealed .card-bg {
       filter: blur(12px);
-      transform: scale(1.15); /* pousse les bords flous hors du cadre */
+      transform: scale(1.15);
     }
 
     .link-card.revealed .card-gradient,
@@ -365,9 +361,6 @@
       display: flex;
     }
 
-    /* ─── ANIMATION SHAKE (attirer l'attention) ─── */
-    /* translateZ(0) gardé dans chaque étape pour ne pas perdre
-       le correctif mobile pendant l'animation */
     @keyframes shake-attention {
       0%, 100%      { transform: translateZ(0) rotate(0deg)    scale(1);     }
       10%, 30%, 50% { transform: translateZ(0) rotate(-1.5deg) scale(1.015); }
@@ -381,11 +374,17 @@
       will-change: transform;
     }
 
-    /* On coupe l'animation au survol et quand la carte est floutée */
     .shake:hover,
     .shake.revealed {
       animation: none;
       transform: translateZ(0) scale(1.02);
+    }
+
+    /* On garde le zoom hover des petits boutons sociaux (1.12)
+       quand l'animation shake est mise en pause au survol */
+    .social-btn.shake:hover {
+      animation: none;
+      transform: translateZ(0) scale(1.12);
     }
 
     .page-footer {
@@ -470,7 +469,7 @@
       </a>
 
       <a
-        class="social-btn"
+        class="social-btn shake"
         href="https://www.reveal.me/juicylilie/e9cdwe"
         target="_blank" rel="nofollow noopener noreferrer"
         aria-label="Reveal"
@@ -615,7 +614,6 @@
 </div>
 
 <script>
-  // ── Countdown (ne tourne que si le bandeau existe dans la page) ──
   (function() {
     const hEl = document.getElementById('cd-h');
     const mEl = document.getElementById('cd-m');
@@ -635,18 +633,12 @@
     tick();
   })();
 
-  // ── Cartes sensibles : contenu visible par défaut ──
-  // 1er clic  : la carte se floute + badge "Contenu sensible" apparaît
-  // 2e clic   : le lien s'ouvre dans un nouvel onglet (+ event Lead si pixel présent)
-  // Si on clique sur une autre carte pendant qu'une est floutée,
-  // la précédente redevient visible et la nouvelle se floute.
   (function() {
     const cards = document.querySelectorAll('.sensitive-card');
     let currentlyRevealed = null;
 
     cards.forEach(function(card) {
       card.addEventListener('click', function(e) {
-        // Cas 1 : cette carte est déjà floutée → on laisse le lien s'ouvrir
         if (card.classList.contains('revealed')) {
           const label = card.getAttribute('data-label') || 'link';
           if (typeof fbq !== 'undefined') {
@@ -657,15 +649,13 @@
           }
           card.classList.remove('revealed');
           currentlyRevealed = null;
-          return; // navigation normale (target="_blank")
+          return;
         }
 
-        // Cas 2 : une autre carte est floutée → on la défloute
         if (currentlyRevealed && currentlyRevealed !== card) {
           currentlyRevealed.classList.remove('revealed');
         }
 
-        // Cas 3 : on floute la carte cliquée et on bloque la navigation
         e.preventDefault();
         card.classList.add('revealed');
         currentlyRevealed = card;
