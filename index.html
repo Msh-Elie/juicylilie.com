@@ -151,7 +151,10 @@
       white-space: nowrap;
     }
 
+    /* ─── Calque au-dessus du dégradé noir de la cover ─── */
     .socials {
+      position: relative;
+      z-index: 5;
       display: flex;
       justify-content: center;
       gap: 10px;
@@ -159,6 +162,8 @@
     }
 
     .social-btn {
+      position: relative;
+      z-index: 1;
       width: 34px; height: 34px;
       border-radius: 50%;
       background: #fff;
@@ -381,9 +386,7 @@
       transform: translateZ(0) scale(1.02);
     }
 
-    /* ─── Shake dédié au petit bouton rond Reveal ───
-       Rotation bien plus ample (±12°) + scale plus marqué + halo rouge qui pulse
-       pour que l'animation soit réellement visible sur 34 px. */
+    /* ─── Shake dédié au petit bouton rond Reveal ─── */
     @keyframes shake-reveal {
       0%   {
         transform: translateZ(0) rotate(0deg) scale(1);
@@ -409,7 +412,6 @@
       will-change: transform, box-shadow;
     }
 
-    /* Au survol : pause + zoom 1.12 comme les autres boutons sociaux */
     .social-btn.shake:hover {
       animation: none;
       transform: translateZ(0) scale(1.12);
