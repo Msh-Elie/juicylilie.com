@@ -496,16 +496,12 @@
     .check-box h2 { font-size: 26px; font-weight: 700; margin-bottom: 10px; color: #fff; }
     .check-box > p { font-size: 15px; line-height: 1.5; color: #a1a1aa; margin-bottom: 22px; }
     .ts-wrap {
-      background: #fff;
-      border-radius: 12px;
-      min-height: 81px;
+      min-height: 65px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 8px;
-      overflow: hidden;
     }
-    .ts-loading { color: #555; font-size: 13px; }
+    .ts-loading { color: #a1a1aa; font-size: 13px; }
     .check-msg {
       min-height: 20px;
       margin: 14px 0 4px;
@@ -768,6 +764,7 @@
     var widgetId = null;
     var token = null;
     var busy = false;
+    var autoSubmit = true; // redirection automatique après vérification réussie
     var lastFocus = null;
 
     function showStep(name) {
@@ -779,6 +776,7 @@
     function openGate(target, label) {
       pendingTarget = target;
       pendingLabel = label;
+      autoSubmit = true;
       lastFocus = document.activeElement;
       gate.hidden = false;
       gate.classList.add('open');
@@ -837,12 +835,14 @@
         document.getElementById('ts-widget').innerHTML = '';
         widgetId = ts.render('#ts-widget', {
           sitekey: TURNSTILE_SITE_KEY,
-          theme: 'light',
+          theme: 'dark',
+          size: 'flexible',
           action: 'adult-gate',
           callback: function(t) {
             token = t;
             btn.disabled = busy;
             setMsg('');
+            if (autoSubmit) submitToken();
           },
           'expired-callback': function() {
             token = null;
@@ -871,7 +871,11 @@
       if (busy) return;
       // Échec de chargement du widget → nouvelle tentative
       if (!token) { tsReady = null; startCheck(); return; }
+      submitToken();
+    });
 
+    function submitToken() {
+      if (busy || !token) return;
       busy = true;
       btn.disabled = true;
       btn.textContent = 'Vérification…';
@@ -903,12 +907,14 @@
             ? err.message
             : 'Erreur réseau pendant la vérification. Merci de réessayer.';
           setMsg(text, 'error');
-          // Un jeton Turnstile n'est utilisable qu'une fois : on relance le widget
+          // Un jeton Turnstile n'est utilisable qu'une fois : on relance le widget.
+          // Après un échec, plus d'envoi automatique (évite une boucle) : clic sur Continue.
+          autoSubmit = false;
           resetWidget();
           btn.textContent = 'Continue';
         })
         .finally(function() { busy = false; });
-    });
+    }
 
     document.getElementById('age-yes').addEventListener('click', startCheck);
     document.getElementById('age-no').addEventListener('click', function() { showStep('denied'); });
