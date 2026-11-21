@@ -4,10 +4,6 @@
 
 const SITEVERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
 
-// Clé secrète Turnstile (écrite directement ici ; la variable d'environnement
-// TURNSTILE_SECRET_KEY, si elle existe, est prioritaire).
-const TURNSTILE_SECRET_FALLBACK = '0x4AAAAAAGLo6RqKbEiaFQBHRr_G5Mo3tYI'
-
 // Les destinations finales ne sont révélées qu'après une validation réussie.
 const DESTINATIONS = {
   mym: 'https://mym.fans/app/t/hmmlql6sezBeWmQ',
@@ -28,7 +24,7 @@ async function verify(request, context) {
     return json({ success: false, error: 'Méthode non autorisée.' }, 405)
   }
 
-  const secret = process.env.TURNSTILE_SECRET_KEY || TURNSTILE_SECRET_FALLBACK
+  const secret = process.env.TURNSTILE_SECRET_KEY
   if (!secret) {
     console.error('TURNSTILE_SECRET_KEY is not configured')
     return json({ success: false, error: 'La vérification est momentanément indisponible.' }, 500)
