@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Juicylilie</title>
+  <meta name="description" content="Discover my profile.">
+  <meta name="theme-color" content="#000000">
+  <meta name="facebook-domain-verification" content="y847dfrlzk3gl8pxpl18da7dz1nbtq" />
+  <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2943580392695707');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2943580392695707&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      min-height: 100dvh;
+      background: #000;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .page {
+      min-height: 100vh;
+      min-height: 100dvh;
+      position: relative;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bg-blur {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: blur(30px) brightness(0.4);
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+      transform: scale(1.05);
+    }
+
+    .card {
+      position: relative;
+      z-index: 10;
+      width: 420px;
+      max-width: 95vw;
+      margin: 0 auto;
+      background: #000;
+      border-radius: 24px;
+      overflow: hidden;
+      min-height: 80vh;
+      min-height: 80dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── COVER : photo entière, ratio naturel ─── */
+    .cover {
+      position: relative;
+      overflow: hidden;
+      line-height: 0;
+      flex-shrink: 0;
+      background: #000;
+    }
+
+    .cover img.cover-photo {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .cover::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top,
+        #000 0%,
+        rgba(0,0,0,0.7) 8%,
+        rgba(0,0,0,0.25) 22%,
+        transparent 40%
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .cover-info {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%;
+      padding: 0 16px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 3;
+    }
+
+    .cover-name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .cover-name-row h1 {
+      font-size: 46px;
+      font-family: Arial, sans-serif;
+      font-weight: 600;
+      color: #fff;
+      text-shadow: 2px 2px 19px rgba(11,11,11,1);
+      line-height: 1.1;
+    }
+
+    .blue-tick {
+      width: 24px; height: 24px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .online-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #fff;
+      border-radius: 999px;
+      padding: 6px 16px 6px 12px;
+      margin: 0 0 26px;
+    }
+
+    .dot-wrap { position: relative; width: 12px; height: 12px; flex-shrink: 0; }
+    .dot {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgb(34,197,94);
+    }
+    .dot-ping {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgb(34,197,94);
+      opacity: 0.7;
+      animation: ping 2s cubic-bezier(0,0,0.8,1) infinite;
+    }
+    @keyframes ping {
+      0%   { transform: scale(1); opacity: 0.7; }
+      75%, 100% { transform: scale(2.2); opacity: 0; }
+    }
+    .online-badge span {
+      color: #1f2937;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* ─── Socials juste sous la cover ─── */
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 16px 0;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 5;
+    }
+
+    .social-btn {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      flex-shrink: 0;
+      transition: transform 0.15s;
+    }
+    .social-btn:hover { transform: scale(1.12); }
+    .social-btn img {
+      width: 18px; height: 18px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* ─── ZONE CENTRALE : cartes empilées et centrées ─── */
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px 28px;
+    }
+
+    .cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: 100%;
+    }
+
+    /* ─── CARTE TELEGRAM (bleu) ─── */
+    .telegram-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #2AABEE 0%, #229ED9 100%);
+      border: 1.5px solid rgba(255,255,255,0.18);
+      text-decoration: none;
+      color: #fff;
+      box-shadow: 0 12px 32px rgba(42,171,238,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .telegram-card:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 18px 44px rgba(42,171,238,0.5);
+    }
+
+    /* ─── CARTE MYM (noire + accents roses, logo officiel) ─── */
+    .mym-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 22px;
+      background: #000;
+      border: 2px solid #FF2E93;
+      text-decoration: none;
+      color: #fff;
+      box-shadow: 0 0 24px rgba(255,46,147,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .mym-card:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 0 36px rgba(255,46,147,0.6);
+    }
+
+    /* ─── Structure interne commune ─── */
+    .tg-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tg-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+    }
+
+    /* Logo MyM (image officielle) */
+    .mym-logo {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .tg-text {
+      flex: 1;
+      min-width: 0;
+      text-align: left;
+    }
+
+    .tg-text h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 3px;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .tg-text p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.9);
+      font-weight: 500;
+    }
+
+    .tg-arrow {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      opacity: 0.95;
+    }
+
+    .tg-arrow svg {
+      width: 100%;
+      height: 100%;
+      stroke: #fff;
+    }
+
+    .page-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-size: 12px;
+      opacity: 0.15;
+      color: rgba(255,255,255,0.9);
+      padding: 20px 0 24px;
+      flex-shrink: 0;
+    }
+    .page-footer a { color: inherit; text-decoration: underline; }
+
+    /* ─── MODALE ÂGE + VÉRIFICATION ─── */
+    .gate {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.78);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .gate.open { display: flex; }
+    .gate-step { display: none; width: 100%; }
+    .gate-step.active { display: block; animation: gate-in 0.22s ease-out; }
+    @keyframes gate-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    .gate-box {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      background: #000;
+      border: 3px solid rgb(126,126,126);
+      border-radius: 40px;
+      padding: 30px 24px 24px;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+    }
+    .gate-icon {
+      width: 52px; height: 52px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      background: #fff;
+      color: #000;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 17px;
+    }
+    .gate-box h2 { font-size: 24px; font-weight: 600; margin-bottom: 10px; }
+    .gate-box p { font-size: 14px; line-height: 1.5; color: #b5b5b5; }
+    .gate-question { margin: 20px 0 14px; font-size: 17px; font-weight: 600; color: #fff; }
+    .gate-actions { display: flex; flex-direction: column; gap: 10px; }
+    .gate-btn {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .gate-btn:active { transform: scale(0.98); }
+    .gate-btn.primary { background: #fff; color: #000; }
+    .gate-btn.secondary { background: #000; color: #fff; border: 2px solid rgb(126,126,126); }
+    .gate-close {
+      margin-top: 14px;
+      background: none; border: 0;
+      color: #777; font-size: 13px; cursor: pointer;
+      text-decoration: underline; font-family: inherit;
+    }
+
+    /* Étape "Just checking..." */
+    .check-box {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      background: #000;
+      border: 3px solid rgb(126,126,126);
+      border-radius: 40px;
+      padding: 32px 24px 24px;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+    }
+    .check-box h2 { font-size: 26px; font-weight: 600; margin-bottom: 10px; color: #fff; }
+    .check-box > p { font-size: 15px; line-height: 1.5; color: #a1a1aa; margin-bottom: 22px; }
+    .ts-wrap {
+      min-height: 65px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #ts-widget { width: 100%; }
+    .ts-loading { color: #a1a1aa; font-size: 13px; }
+    .check-msg {
+      min-height: 20px;
+      margin: 14px 0 4px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .check-msg.error { color: #ff6b6b; }
+    .check-msg.ok { color: #4ade80; }
+    .btn-main {
+      width: 100%;
+      margin-top: 8px;
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 15px 16px;
+      background: #fff;
+      color: #000;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+    .btn-main:active:not(:disabled) { transform: scale(0.98); }
+    .btn-main:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    @media (max-width: 480px) {
+      .card {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+        min-height: 100dvh;
+      }
+      .page { min-height: 100dvh; }
+      .cover-name-row h1 { font-size: 38px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <img
+    class="bg-blur"
+    src="assert/pp.jpeg"
+    alt=""
+  >
+
+  <div class="card">
+
+    <!-- COVER : photo complète, non recadrée -->
+    <div class="cover">
+      <img
+        class="cover-photo"
+        src="assert/pp.jpeg"
+        alt="Juicylilie cover"
+      >
+      <div class="cover-info">
+        <div class="cover-name-row">
+          <h1>Lilie</h1>
+          <img
+            class="blue-tick"
+            src="https://assets.linkscale.to/icons/blue-tick/icon-blue-tick.png"
+            alt="verified"
+          >
+        </div>
+        <div class="online-badge">
+          <div class="dot-wrap">
+            <div class="dot-ping"></div>
+            <div class="dot"></div>
+          </div>
+          <span>Online</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOCIALS : bulle Instagram -->
+    <div class="socials">
+      <a
+        class="social-btn"
+        href="https://www.instagram.com/itslilieoff"
+        target="_blank" rel="nofollow noopener noreferrer"
+        aria-label="Instagram"
+      >
+        <img src="https://assets.linkscale.to/instagram-icon-color.png" alt="Instagram">
+      </a>
+    </div>
+
+    <!-- ZONE CENTRÉE : Telegram + MyM -->
+    <div class="main-content">
+      <div class="cards-stack">
+
+        <!-- Carte Telegram -->
+        <a
+          class="telegram-card"
+          href="https://t.me/+Hn9U4fi4HRcyZWVk"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+          data-label="Telegram"
+        >
+          <div class="tg-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+            </svg>
+          </div>
+          <div class="tg-text">
+            <h3>Jardin secret 🔥</h3>
+            <p>Rejoins-moi sur Telegram</p>
+          </div>
+          <div class="tg-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
+
+        <!-- Carte MyM avec logo officiel -->
+        <a
+          class="mym-card"
+          href="#"
+          role="button"
+          data-target="mym"
+          data-label="MyM"
+        >
+          <div class="tg-icon">
+            <img
+              class="mym-logo"
+              src="https://mym.fans/build/images/favicon/apple-touch-icon.b1b0da10.png"
+              alt="MyM"
+            >
+          </div>
+          <div class="tg-text">
+            <h3>Attention, c'est privé 🙄🌶️</h3>
+            <p></p>
+          </div>
+          <div class="tg-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <a href="https://linkscale.to/report" target="_blank" rel="noopener noreferrer">Report</a>
+      <a href="https://linkscale.to/terms" target="_blank" rel="noopener noreferrer">Terms</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── MODALE : avertissement âge + vérification humaine ─── -->
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title" hidden>
+
+  <!-- Étape 1 : avertissement + âge -->
+  <div class="gate-step" data-step="age">
+    <div class="gate-box">
+      <div class="gate-icon" aria-hidden="true">18+</div>
+      <h2 id="gate-title">Contenu sensible</h2>
+      <p>Le contenu que tu t'apprêtes à consulter est sensible et strictement réservé à un public adulte.</p>
+      <div class="gate-question">As-tu 18 ans ou plus ?</div>
+      <div class="gate-actions">
+        <button type="button" class="gate-btn primary" id="age-yes">Oui, j'ai 18 ans ou plus</button>
+        <button type="button" class="gate-btn secondary" id="age-no">Non, je suis mineur</button>
+      </div>
+      <button type="button" class="gate-close" data-close>Annuler</button>
+    </div>
+  </div>
+
+  <!-- Étape 1 bis : accès refusé -->
+  <div class="gate-step" data-step="denied">
+    <div class="gate-box">
+      <div class="gate-icon" aria-hidden="true">✕</div>
+      <h2>Accès refusé</h2>
+      <p>Ce contenu est réservé aux personnes majeures. Tu ne peux pas y accéder.</p>
+      <div class="gate-actions" style="margin-top:20px">
+        <button type="button" class="gate-btn primary" id="go-back">Retourner à la page précédente</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Étape 2 : vérification humaine Cloudflare Turnstile -->
+  <div class="gate-step" data-step="check">
+    <div class="check-box">
+      <h2>Just checking...</h2>
+      <p>Confirming you're a person. This only takes a moment.</p>
+      <div class="ts-wrap"><div id="ts-widget"><span class="ts-loading">Chargement…</span></div></div>
+      <div class="check-msg" id="check-msg" role="status" aria-live="polite"></div>
+      <button type="button" class="btn-main" id="check-continue" disabled>Continue</button>
+      <button type="button" class="gate-close" data-close>Annuler</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Tracking clic cartes (Telegram + MyM) ──
+  (function() {
+    document.querySelectorAll('.telegram-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        const label = card.getAttribute('data-label') || 'link';
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'Lead', {
+            content_name: label,
+            content_category: 'outbound_link'
+          });
+        }
+      });
+    });
+  })();
+
+  // ── Cartes sensibles ──
+  // 1er clic : la carte se floute + badge "Contenu sensible"
+  // 2e clic  : ouverture de la modale (âge → vérification Turnstile)
+  // La destination finale n'est fournie par le serveur qu'après une
+  // validation Turnstile réussie côté serveur.
+  (function() {
+    var TURNSTILE_SITE_KEY = '0x4AAAAAAGLo6STJXK59b9To';
+
+    var gate = document.getElementById('gate');
+    var steps = gate.querySelectorAll('.gate-step');
+    var msg = document.getElementById('check-msg');
+    var btn = document.getElementById('check-continue');
+    var cards = document.querySelectorAll('.mym-card');
+    var currentlyRevealed = null;
+    var pendingTarget = null;
+    var pendingLabel = null;
+    var widgetId = null;
+    var token = null;
+    var busy = false;
+    var autoSubmit = true; // redirection automatique après vérification réussie
+    var lastFocus = null;
+
+    function showStep(name) {
+      steps.forEach(function(s) { s.classList.toggle('active', s.getAttribute('data-step') === name); });
+      var first = gate.querySelector('.gate-step.active button');
+      if (first) first.focus({ preventScroll: true });
+    }
+
+    function openGate(target, label) {
+      pendingTarget = target;
+      pendingLabel = label;
+      autoSubmit = true;
+      lastFocus = document.activeElement;
+      gate.hidden = false;
+      gate.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      showStep('age');
+    }
+
+    function closeGate() {
+      gate.classList.remove('open');
+      gate.hidden = true;
+      document.body.style.overflow = '';
+      pendingTarget = null;
+      resetWidget();
+      if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    }
+
+    function setMsg(text, type) {
+      msg.textContent = text || '';
+      msg.className = 'check-msg' + (type ? ' ' + type : '');
+    }
+
+    // ── Chargement du script Turnstile (rendu explicite) ──
+    var tsReady = null;
+    function loadTurnstile() {
+      if (tsReady) return tsReady;
+      tsReady = new Promise(function(resolve, reject) {
+        if (window.turnstile) return resolve(window.turnstile);
+        window.__onTurnstileLoad = function() { resolve(window.turnstile); };
+        var sc = document.createElement('script');
+        sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=__onTurnstileLoad';
+        sc.async = true;
+        sc.defer = true;
+        sc.onerror = function() { tsReady = null; reject(new Error('turnstile-load')); };
+        document.head.appendChild(sc);
+      });
+      return tsReady;
+    }
+
+    function resetWidget() {
+      token = null;
+      btn.disabled = true;
+      if (window.turnstile && widgetId !== null) {
+        try { window.turnstile.reset(widgetId); } catch (e) {}
+      }
+    }
+
+    function startCheck() {
+      showStep('check');
+      setMsg('');
+      token = null;
+      btn.disabled = true;
+      btn.textContent = 'Continue';
+
+      loadTurnstile().then(function(ts) {
+        if (widgetId !== null) { ts.reset(widgetId); return; }
+        document.getElementById('ts-widget').innerHTML = '';
+        widgetId = ts.render('#ts-widget', {
+          sitekey: TURNSTILE_SITE_KEY,
+          theme: 'dark',
+          size: 'flexible',
+          action: 'adult-gate',
+          callback: function(t) {
+            token = t;
+            btn.disabled = busy;
+            setMsg('');
+            if (autoSubmit) submitToken();
+          },
+          'expired-callback': function() {
+            token = null;
+            btn.disabled = true;
+            setMsg('La vérification a expiré. Merci de la refaire.', 'error');
+          },
+          'error-callback': function(code) {
+            token = null;
+            btn.disabled = true;
+            var c = String(code || '');
+            var hint = '';
+            if (c.indexOf('110200') === 0) hint = ' (domaine non autorisé pour cette clé Turnstile)';
+            else if (c.indexOf('1101') === 0 || c.indexOf('400020') === 0) hint = ' (clé publique Turnstile invalide)';
+            setMsg('La vérification n\'a pas pu aboutir' + hint + '. Réessaie. Code : ' + (c || 'inconnu'), 'error');
+            return true;
+          }
+        });
+      }).catch(function() {
+        setMsg('Impossible de charger la vérification. Vérifie ta connexion puis réessaie.', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Réessayer';
+      });
+    }
+
+    btn.addEventListener('click', function() {
+      if (busy) return;
+      // Échec de chargement du widget → nouvelle tentative
+      if (!token) { tsReady = null; startCheck(); return; }
+      submitToken();
+    });
+
+    function submitToken() {
+      if (busy || !token) return;
+      busy = true;
+      btn.disabled = true;
+      btn.textContent = 'Vérification…';
+      setMsg('');
+
+      fetch('/api/verify-turnstile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: token, target: pendingTarget })
+      })
+        .then(function(res) {
+          return res.json().catch(function() { return {}; }).then(function(data) {
+            return { ok: res.ok, data: data };
+          });
+        })
+        .then(function(r) {
+          if (r.ok && r.data && r.data.success && r.data.url) {
+            setMsg('Vérification réussie. Redirection…', 'ok');
+            if (typeof fbq !== 'undefined') {
+              fbq('track', 'Lead', { content_name: pendingLabel || 'link', content_category: 'sensitive_content' });
+            }
+            window.location.assign(r.data.url);
+            return;
+          }
+          throw new Error((r.data && r.data.error) || 'La vérification a échoué. Merci de réessayer.');
+        })
+        .catch(function(err) {
+          var text = err && err.message && err.message !== 'Failed to fetch'
+            ? err.message
+            : 'Erreur réseau pendant la vérification. Merci de réessayer.';
+          setMsg(text, 'error');
+          // Un jeton Turnstile n'est utilisable qu'une fois : on relance le widget.
+          // Après un échec, plus d'envoi automatique (évite une boucle) : clic sur Continue.
+          autoSubmit = false;
+          resetWidget();
+          btn.textContent = 'Continue';
+        })
+        .finally(function() { busy = false; });
+    }
+
+    document.getElementById('age-yes').addEventListener('click', startCheck);
+    document.getElementById('age-no').addEventListener('click', function() { showStep('denied'); });
+    document.getElementById('go-back').addEventListener('click', function() {
+      var ref = document.referrer;
+      var external = ref && ref.indexOf(location.origin) !== 0;
+      if (external) { window.location.href = ref; return; }
+      if (history.length > 1) { history.back(); return; }
+      closeGate();
+    });
+    gate.querySelectorAll('[data-close]').forEach(function(b) { b.addEventListener('click', closeGate); });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && gate.classList.contains('open')) closeGate();
+    });
+
+    cards.forEach(function(card) {
+      card.addEventListener('click', function(e) {
+        e.preventDefault();
+        openGate(card.getAttribute('data-target'), card.getAttribute('data-label'));
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
