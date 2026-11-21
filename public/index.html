@@ -441,10 +441,10 @@
       width: 100%;
       max-width: 400px;
       margin: 0 auto;
-      background: #141414;
-      border: 1px solid #2a2a2a;
-      border-radius: 20px;
-      padding: 28px 22px 22px;
+      background: #000;
+      border: 3px solid rgb(126,126,126);
+      border-radius: 40px;
+      padding: 30px 24px 24px;
       text-align: center;
       box-shadow: 0 24px 60px rgba(0,0,0,0.6);
     }
@@ -452,19 +452,19 @@
       width: 52px; height: 52px;
       margin: 0 auto 14px;
       border-radius: 50%;
-      background: rgba(255,77,77,0.12);
-      color: #ff4d4d;
+      background: #fff;
+      color: #000;
       display: flex; align-items: center; justify-content: center;
       font-weight: 700; font-size: 17px;
     }
-    .gate-box h2 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+    .gate-box h2 { font-size: 24px; font-weight: 600; margin-bottom: 10px; }
     .gate-box p { font-size: 14px; line-height: 1.5; color: #b5b5b5; }
     .gate-question { margin: 20px 0 14px; font-size: 17px; font-weight: 600; color: #fff; }
     .gate-actions { display: flex; flex-direction: column; gap: 10px; }
     .gate-btn {
       appearance: none;
       border: 0;
-      border-radius: 12px;
+      border-radius: 999px;
       padding: 14px 16px;
       font-size: 15px;
       font-weight: 600;
@@ -474,7 +474,7 @@
     }
     .gate-btn:active { transform: scale(0.98); }
     .gate-btn.primary { background: #fff; color: #000; }
-    .gate-btn.secondary { background: #262626; color: #fff; }
+    .gate-btn.secondary { background: #000; color: #fff; border: 2px solid rgb(126,126,126); }
     .gate-close {
       margin-top: 14px;
       background: none; border: 0;
@@ -487,13 +487,14 @@
       width: 100%;
       max-width: 420px;
       margin: 0 auto;
-      background: #1c1c1e;
-      border-radius: 18px;
-      padding: 32px 22px 24px;
+      background: #000;
+      border: 3px solid rgb(126,126,126);
+      border-radius: 40px;
+      padding: 32px 24px 24px;
       text-align: center;
       box-shadow: 0 24px 60px rgba(0,0,0,0.6);
     }
-    .check-box h2 { font-size: 26px; font-weight: 700; margin-bottom: 10px; color: #fff; }
+    .check-box h2 { font-size: 26px; font-weight: 600; margin-bottom: 10px; color: #fff; }
     .check-box > p { font-size: 15px; line-height: 1.5; color: #a1a1aa; margin-bottom: 22px; }
     .ts-wrap {
       min-height: 65px;
@@ -501,6 +502,7 @@
       align-items: center;
       justify-content: center;
     }
+    #ts-widget { width: 100%; }
     .ts-loading { color: #a1a1aa; font-size: 13px; }
     .check-msg {
       min-height: 20px;
@@ -510,23 +512,23 @@
     }
     .check-msg.error { color: #ff6b6b; }
     .check-msg.ok { color: #4ade80; }
-    .btn-violet {
+    .btn-main {
       width: 100%;
       margin-top: 8px;
       appearance: none;
       border: 0;
-      border-radius: 12px;
+      border-radius: 999px;
       padding: 15px 16px;
-      background: #7c3aed;
-      color: #fff;
+      background: #fff;
+      color: #000;
       font-size: 16px;
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
-      transition: background 0.15s, opacity 0.15s;
+      transition: transform 0.15s, opacity 0.15s;
     }
-    .btn-violet:hover:not(:disabled) { background: #6d28d9; }
-    .btn-violet:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-main:active:not(:disabled) { transform: scale(0.98); }
+    .btn-main:disabled { opacity: 0.45; cursor: not-allowed; }
 
     @media (max-width: 480px) {
       .card { width: 100%; border-radius: 0; }
@@ -718,7 +720,7 @@
       <p>Confirming you're a person. This only takes a moment.</p>
       <div class="ts-wrap"><div id="ts-widget"><span class="ts-loading">Chargement…</span></div></div>
       <div class="check-msg" id="check-msg" role="status" aria-live="polite"></div>
-      <button type="button" class="btn-violet" id="check-continue" disabled>Continue</button>
+      <button type="button" class="btn-main" id="check-continue" disabled>Continue</button>
       <button type="button" class="gate-close" data-close>Annuler</button>
     </div>
   </div>
