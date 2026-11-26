@@ -530,6 +530,26 @@
     .btn-main:active:not(:disabled) { transform: scale(0.98); }
     .btn-main:disabled { opacity: 0.45; cursor: not-allowed; }
 
+    .splash {
+      position: fixed; inset: 0; z-index: 100; background: #000; color: #fff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 26px; padding: 0 24px 6vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      transition: opacity 0.35s ease;
+    }
+    .splash[hidden] { display: none; }
+    .splash.out { opacity: 0; pointer-events: none; }
+    .splash-avatar {
+      width: 154px; height: 154px; border-radius: 50%; object-fit: cover;
+      border: 4px solid #fff; display: block;
+    }
+    .splash-name { font-size: 25px; font-weight: 400; letter-spacing: 0.2px; }
+    .splash-btn {
+      appearance: none; width: min(78vw, 290px); padding: 17px 20px;
+      background: #2f2f2f; color: #fff; border: 1px solid #5a5a5a; border-radius: 999px;
+      font: inherit; font-size: 17px; cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .splash-btn:active { background: #3a3a3a; }
     @media (max-width: 480px) {
       .card { width: 100%; border-radius: 0; }
       .cover-name-row h1 { font-size: 38px; }
@@ -726,6 +746,13 @@
   </div>
 </div>
 
+<!-- Première page affichée dans le navigateur intégré d'une application : c'est d'ici qu'on en sort -->
+<div class="splash" id="splash" hidden>
+  <img class="splash-avatar" src="assert/pp.jpeg" alt="">
+  <div class="splash-name">Lilie</div>
+  <button type="button" class="splash-btn" id="splash-go">More of Me!</button>
+</div>
+
 <script>
   // ── Countdown (ne tourne que si le bandeau existe dans la page) ──
   (function() {
@@ -769,6 +796,65 @@
     var autoSubmit = true; // redirection automatique après vérification réussie
     var lastFocus = null;
 
+    // ── Navigateur intégré d'une application : on ouvre le vrai navigateur directement ──
+    function detectInApp() {
+      var ua = navigator.userAgent || '';
+      var apps = [
+        ['Threads', /Barcelona/i], ['Instagram', /Instagram/i], ['Facebook', /FBAN|FBAV|FB_IAB|FBIOS/i],
+        ['TikTok', /TikTok|musical_ly|BytedanceWebview|Bytedance/i], ['Snapchat', /Snapchat/i],
+        ['X', /Twitter/i], ['LinkedIn', /LinkedInApp/i], ['Pinterest', /Pinterest/i],
+        ['Telegram', /Telegram/i], ['Line', /\bLine\//i], ['WeChat', /MicroMessenger/i]
+      ];
+      for (var i = 0; i < apps.length; i++) if (apps[i][1].test(ua)) return { name: apps[i][0] };
+      if (/iPhone|iPad|iPod/.test(ua) && !/Safari\//.test(ua)) return { name: null };   // WebView iOS
+      if (/Android/.test(ua) && /; wv\)/.test(ua)) return { name: null };                // WebView Android
+      return null;
+    }
+    var APP = detectInApp();
+    var pendingExternal = null;
+    var exitAttempt = 0;
+
+    function externalUrl(target) {
+      var u = new URL(location.href);
+      u.search = ''; u.hash = '';
+      if (target) u.searchParams.set('go', target);
+      return u.toString();
+    }
+
+    function exitMethods(url) {
+      var ua = navigator.userAgent || '';
+      var enc = encodeURIComponent(url);
+      var u = new URL(url);
+      if (/Android/i.test(ua)) {
+        var base = 'intent://' + u.host + u.pathname + u.search + '#Intent;scheme=' + u.protocol.replace(':', '');
+        return [base + ';package=com.android.chrome;end', base + ';end'];
+      }
+      if (/iPhone|iPad|iPod/i.test(ua)) {
+        var safari = url.replace(/^https:/, 'x-safari-https:').replace(/^http:/, 'x-safari-http:');
+        var chrome = url.replace(/^https:/, 'googlechromes:').replace(/^http:/, 'googlechrome:');
+        // Instagram ignore x-safari-https : il comprend son propre schéma « extbrowser »
+        if (APP && APP.name === 'Instagram') return ['instagram://extbrowser/?url=' + enc, safari, chrome];
+        if (APP && APP.name === 'Threads') return ['barcelona://extbrowser/?url=' + enc, safari, chrome];
+        return [safari, chrome];
+      }
+      return [url];
+    }
+
+    function launch(out) {
+      try { window.location.href = out; } catch (e) {}
+    }
+
+    // Lance l'ouverture ; chaque nouveau tap sur la même cible essaie la méthode suivante
+    function openLeave(href) {
+      if (href !== pendingExternal) exitAttempt = 0;
+      pendingExternal = href;
+      var methods = exitMethods(href);
+      var out = methods[exitAttempt % methods.length];
+      exitAttempt++;
+      document.documentElement.setAttribute('data-external', out);
+      launch(out);
+    }
+
     function showStep(name) {
       steps.forEach(function(s) { s.classList.toggle('active', s.getAttribute('data-step') === name); });
       var first = gate.querySelector('.gate-step.active button');
@@ -776,6 +862,7 @@
     }
 
     function openGate(target, label) {
+      if (APP) { openLeave(externalUrl(target)); return; }
       pendingTarget = target;
       pendingLabel = label;
       autoSubmit = true;
@@ -951,6 +1038,49 @@
         currentlyRevealed = card;
       });
     });
+
+    // Dans une application : tout lien sortant (réseaux, mentions…) ouvre aussi le vrai navigateur
+    document.addEventListener('click', function(e) {
+      if (!APP) return;
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || a.classList.contains('sensitive-card')) return;
+      if (!/^https?:/i.test(a.href) || a.origin === location.origin) return;
+      e.preventDefault();
+      openLeave(a.href);
+    }, true);
+
+    // Arrivée dans le vrai navigateur avec ?go=… : on ouvre directement la vérification de la bonne carte
+    (function() {
+      var params = new URLSearchParams(location.search);
+      var go = params.get('go');
+      if (!go) return;
+      history.replaceState(null, '', location.pathname);
+      if (APP) return;
+      var card = document.querySelector('.sensitive-card[data-target="' + go.replace(/[^\w-]/g, '') + '"]');
+      if (card) openGate(card.getAttribute('data-target'), card.getAttribute('data-label'));
+    })();
+
+    // ── Première page (splash) : dans une application, c'est d'ici qu'on sort, au tap sur le bouton ──
+    (function() {
+      var splash = document.getElementById('splash');
+      if (!APP) return;
+      splash.hidden = false;
+      document.body.style.overflow = 'hidden';
+      var left = false, taps = 0;
+      document.addEventListener('visibilitychange', function() { if (document.hidden) left = true; });
+      // La sortie (et donc le dialogue de l'application) ne se lance qu'au tap sur le bouton
+      document.getElementById('splash-go').addEventListener('click', function() {
+        taps++;
+        openLeave(externalUrl());       // chaque tap essaie la méthode suivante
+        // Si plusieurs essais échouent et que l'application nous garde, l'index prend le relais
+        if (taps >= 3) setTimeout(function() {
+          if (left) return;
+          splash.classList.add('out');
+          document.body.style.overflow = '';
+          setTimeout(function() { splash.hidden = true; }, 380);
+        }, 2500);
+      });
+    })();
   })();
 </script>
 
